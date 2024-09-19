@@ -10,7 +10,8 @@ import (
 
 // Gets a random quote from zenquotes.io
 func (qs *QuoteService) GetRandomQuote() (*ZenQuote, error) {
-	req, err := http.NewRequest("GET", qs.config.Get("zenquotes_api_url"), nil)
+	apiPath := qs.config.Get("zenquotes_api_url") + "/random"
+	req, err := http.NewRequest("GET", apiPath, nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating request")
 	}
