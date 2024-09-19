@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/pkg/errors"
+	"github.com/psmagicman/terminal-dashboard-app/pkg/config"
 	"github.com/psmagicman/terminal-dashboard-app/pkg/testutils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -65,6 +66,9 @@ func TestGetRandomQuote(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			// Given
+			testConfig := &config.Config{}
+			testConfig.Set("TEST_ZENQUOTES_API_URL", "https://www.example.com")
+			testConfig.Set("TEST_USER_AGENT", "TestAgent/1.0")
 			mockClient := new(MockHTTPClient)
 			mockResponse := &http.Response{
 				StatusCode: tt.responseStatus,
@@ -77,7 +81,7 @@ func TestGetRandomQuote(t *testing.T) {
 				mockClient.On("Do", mock.Anything).Return(mockResponse, nil)
 			}
 
-			quoteService := NewQuoteService(mockClient)
+			quoteService := NewQuoteService(mockClient, testConfig)
 
 			// When
 			quote, err := quoteService.GetRandomQuote()

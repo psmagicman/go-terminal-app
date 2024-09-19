@@ -8,18 +8,13 @@ import (
 	"github.com/pkg/errors"
 )
 
-const (
-	zQuotesRandomAPIURL = "https://zenquotes.io/api/random"
-	userAgent           = "psmagicmain/1.0"
-)
-
 // Gets a random quote from zenquotes.io
 func (qs *QuoteService) GetRandomQuote() (*ZenQuote, error) {
-	req, err := http.NewRequest("GET", zQuotesRandomAPIURL, nil)
+	req, err := http.NewRequest("GET", qs.config.Get("zenquotes_api_url"), nil)
 	if err != nil {
 		return nil, errors.Wrap(err, "creating request")
 	}
-	req.Header.Add("User-Agent", userAgent)
+	req.Header.Add("User-Agent", qs.config.Get("user_agent"))
 	req.Header.Add("Accept", "application/json")
 
 	resp, err := qs.client.Do(req)

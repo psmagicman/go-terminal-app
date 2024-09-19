@@ -1,0 +1,4 @@
+{
+    "FROM_FILE_API_URL": "https://api.example.com",
+    "FROM_FILE_USER_AGENT": "ExampleAgent/1.0"
+}
